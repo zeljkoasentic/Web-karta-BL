@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="mapbox/mapbox-gl.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="mapbox/mapbox-gl-generic-geocoder.css">
+        <link rel="stylesheet" href="./mapbox/measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Broj i starosna struktura stanovništva Banja Luke</title>
+    </head>
+    <body>
+        <div id="map">
+            <nav id="menu"></nav>
+              <div id="distance" class="distance-container"></div>
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="./mapbox/mapbox-gl.js"></script>
+        <script src="mapbox/mapbox-gl-generic-geocoder.min.js"></script>
+        <script src="data/Brojistrukturastanovnitva_0.js"></script>
+<script src="./mapbox/style.js"></script>
+<script src="./js/Autolinker.min.js"></script>
+<script>
+var map = new mapboxgl.Map({
+ container: 'map',
+ style: styleJSON,
+ center: [16.96001520871388,44.775293967459675],
+ zoom: 10,
+ bearing: 360.0,
+ attributionControl: false
+});
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.AttributionControl({
+    customAttribution: '<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://github.com/mapbox/mapbox-gl-js" target="_blank">Mapbox GL JS</a> &middot; <a href="https://qgis.org" target="_blank">QGIS</a>',
+    compact: false
+}));
+var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+
+map.on('click', 'lyr_Brojistrukturastanovnitva_0_0', function (e) {
+    var description = '<table>\
+                    <tr>\
+                        <th scope="row">Naseljeno mjesto</th>\
+                        <td>' + (e.features[0].properties['NM_RS'] !== null ? autolinker.link(e.features[0].properties['NM_RS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 0-4</th>\
+                        <td>' + (e.features[0].properties['st_0-4'] !== null ? autolinker.link(e.features[0].properties['st_0-4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 5-9</th>\
+                        <td>' + (e.features[0].properties['st_5-9'] !== null ? autolinker.link(e.features[0].properties['st_5-9'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 10-14</th>\
+                        <td>' + (e.features[0].properties['st_10-14'] !== null ? autolinker.link(e.features[0].properties['st_10-14'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 15-19</th>\
+                        <td>' + (e.features[0].properties['st_15-19'] !== null ? autolinker.link(e.features[0].properties['st_15-19'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 20-24</th>\
+                        <td>' + (e.features[0].properties['st_20-24'] !== null ? autolinker.link(e.features[0].properties['st_20-24'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 25-29</th>\
+                        <td>' + (e.features[0].properties['st_25-29'] !== null ? autolinker.link(e.features[0].properties['st_25-29'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 30-34</th>\
+                        <td>' + (e.features[0].properties['st_30-34'] !== null ? autolinker.link(e.features[0].properties['st_30-34'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 35-39</th>\
+                        <td>' + (e.features[0].properties['st_35-39'] !== null ? autolinker.link(e.features[0].properties['st_35-39'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 40-44</th>\
+                        <td>' + (e.features[0].properties['st_40-44'] !== null ? autolinker.link(e.features[0].properties['st_40-44'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 45-49</th>\
+                        <td>' + (e.features[0].properties['st_45-49'] !== null ? autolinker.link(e.features[0].properties['st_45-49'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 50-54</th>\
+                        <td>' + (e.features[0].properties['st_50-54'] !== null ? autolinker.link(e.features[0].properties['st_50-54'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 55-59</th>\
+                        <td>' + (e.features[0].properties['st_55-59'] !== null ? autolinker.link(e.features[0].properties['st_55-59'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 60-64</th>\
+                        <td>' + (e.features[0].properties['st_60-64'] !== null ? autolinker.link(e.features[0].properties['st_60-64'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 65-69</th>\
+                        <td>' + (e.features[0].properties['st_65-69'] !== null ? autolinker.link(e.features[0].properties['st_65-69'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 70-74</th>\
+                        <td>' + (e.features[0].properties['st_70-74'] !== null ? autolinker.link(e.features[0].properties['st_70-74'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 75-79</th>\
+                        <td>' + (e.features[0].properties['st_75-79'] !== null ? autolinker.link(e.features[0].properties['st_75-79'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 80-84</th>\
+                        <td>' + (e.features[0].properties['st_80-84'] !== null ? autolinker.link(e.features[0].properties['st_80-84'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 85+</th>\
+                        <td>' + (e.features[0].properties['st_85+'] !== null ? autolinker.link(e.features[0].properties['st_85+'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ukupno stanovnika</th>\
+                        <td>' + (e.features[0].properties['uk_st'] !== null ? autolinker.link(e.features[0].properties['uk_st'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>'
+
+    new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(description)
+        .addTo(map);
+});
+
+// Change the cursor to a pointer when the mouse is over the places layer.
+map.on('mouseenter', 'lyr_Brojistrukturastanovnitva_0_0', function () {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'lyr_Brojistrukturastanovnitva_0_0', function () {
+    map.getCanvas().style.cursor = '';
+});
+    var toggleableLayerIds = ['lyr_Brojistrukturastanovnitva_0_0', 'Broj i struktura stanovništva'];
+
+    for (var i = 0; i < toggleableLayerIds.length; i=i+2) {
+        var id = toggleableLayerIds[i];
+        var layerName = toggleableLayerIds[i+1]
+
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.layer = id;
+        link.textContent = layerName;
+
+        link.onclick = function (e) {
+            var clickedLayer = this.layer;
+            e.preventDefault();
+            e.stopPropagation();
+
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+            if (typeof visibility === 'undefined' || visibility == 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+        };
+
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+        var geocodeNominatimRequest = function(query, mapBounds, options) {
+        var params = { format: "json", q: query, limit: options.limit };
+        var urlParams = new URLSearchParams(Object.entries(params));
+
+        return fetch("http://nominatim.openstreetmap.org/search?" + urlParams)
+            .then(function(response) {
+                if(response.ok) {
+                    return response.json();
+                } else {
+                    return [];
+                }
+            }).then(function(json) {
+                return json.map(function(result) {
+                    return {
+                        name: result.display_name,
+                        lat: result.lat,
+                        lon: result.lon,
+                        bbox: [result.boundingbox[2], result.boundingbox[0],
+                               result.boundingbox[3], result.boundingbox[1]]
+                    };
+                });
+            });
+        };
+
+        map.addControl(new MapboxGenericGeocoder({}, geocodeNominatimRequest));
+</script>
+        <script src="./mapbox/measureMetric.js"></script>
+        <script src="./mapbox/turf.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Broj i starosna struktura stanovništva Banja Luke</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/Brojistrukturastanovnitva_0.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+            map.setMaxBounds(map.getBounds());
+        }
+        function pop_Brojistrukturastanovnitva_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Naseljeno mjesto</th>\
+                        <td>' + (feature.properties['NM_RS'] !== null ? autolinker.link(feature.properties['NM_RS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 0-4</th>\
+                        <td>' + (feature.properties['st_0-4'] !== null ? autolinker.link(feature.properties['st_0-4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 5-9</th>\
+                        <td>' + (feature.properties['st_5-9'] !== null ? autolinker.link(feature.properties['st_5-9'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 10-14</th>\
+                        <td>' + (feature.properties['st_10-14'] !== null ? autolinker.link(feature.properties['st_10-14'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 15-19</th>\
+                        <td>' + (feature.properties['st_15-19'] !== null ? autolinker.link(feature.properties['st_15-19'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 20-24</th>\
+                        <td>' + (feature.properties['st_20-24'] !== null ? autolinker.link(feature.properties['st_20-24'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 25-29</th>\
+                        <td>' + (feature.properties['st_25-29'] !== null ? autolinker.link(feature.properties['st_25-29'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 30-34</th>\
+                        <td>' + (feature.properties['st_30-34'] !== null ? autolinker.link(feature.properties['st_30-34'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 35-39</th>\
+                        <td>' + (feature.properties['st_35-39'] !== null ? autolinker.link(feature.properties['st_35-39'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 40-44</th>\
+                        <td>' + (feature.properties['st_40-44'] !== null ? autolinker.link(feature.properties['st_40-44'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 45-49</th>\
+                        <td>' + (feature.properties['st_45-49'] !== null ? autolinker.link(feature.properties['st_45-49'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 50-54</th>\
+                        <td>' + (feature.properties['st_50-54'] !== null ? autolinker.link(feature.properties['st_50-54'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 55-59</th>\
+                        <td>' + (feature.properties['st_55-59'] !== null ? autolinker.link(feature.properties['st_55-59'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 60-64</th>\
+                        <td>' + (feature.properties['st_60-64'] !== null ? autolinker.link(feature.properties['st_60-64'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 65-69</th>\
+                        <td>' + (feature.properties['st_65-69'] !== null ? autolinker.link(feature.properties['st_65-69'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 70-74</th>\
+                        <td>' + (feature.properties['st_70-74'] !== null ? autolinker.link(feature.properties['st_70-74'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 75-79</th>\
+                        <td>' + (feature.properties['st_75-79'] !== null ? autolinker.link(feature.properties['st_75-79'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 80-84</th>\
+                        <td>' + (feature.properties['st_80-84'] !== null ? autolinker.link(feature.properties['st_80-84'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Stanovništvo 85+</th>\
+                        <td>' + (feature.properties['st_85+'] !== null ? autolinker.link(feature.properties['st_85+'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ukupno stanovnika</th>\
+                        <td>' + (feature.properties['uk_st'] !== null ? autolinker.link(feature.properties['uk_st'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Brojistrukturastanovnitva_0_0(feature) {
+            if (feature.properties['uk_st'] >= 0.000000 && feature.properties['uk_st'] <= 0.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(248,248,248,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,210,200,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['uk_st'] >= 0.000000 && feature.properties['uk_st'] <= 500.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(253,253,253,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(44,123,182,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['uk_st'] >= 500.000000 && feature.properties['uk_st'] <= 1000.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(253,253,253,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(146,198,223,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['uk_st'] >= 1000.000000 && feature.properties['uk_st'] <= 2000.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(253,253,253,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,240,208,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['uk_st'] >= 2000.000000 && feature.properties['uk_st'] <= 5000.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(253,253,253,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(254,223,153,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['uk_st'] >= 5000.000000 && feature.properties['uk_st'] <= 10000.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(253,253,253,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(245,144,83,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['uk_st'] >= 10000.000000 && feature.properties['uk_st'] <= 140000.000000 ) {
+                return {
+                pane: 'pane_Brojistrukturastanovnitva_0',
+                opacity: 1,
+                color: 'rgba(253,253,253,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,25,28,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Brojistrukturastanovnitva_0');
+        map.getPane('pane_Brojistrukturastanovnitva_0').style.zIndex = 400;
+        map.getPane('pane_Brojistrukturastanovnitva_0').style['mix-blend-mode'] = 'normal';
+        var layer_Brojistrukturastanovnitva_0 = new L.geoJson(json_Brojistrukturastanovnitva_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Brojistrukturastanovnitva_0',
+            layerName: 'layer_Brojistrukturastanovnitva_0',
+            pane: 'pane_Brojistrukturastanovnitva_0',
+            onEachFeature: pop_Brojistrukturastanovnitva_0,
+            style: style_Brojistrukturastanovnitva_0_0,
+        });
+        bounds_group.addLayer(layer_Brojistrukturastanovnitva_0);
+        map.addLayer(layer_Brojistrukturastanovnitva_0);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Broj i starosna struktura stanovništva Banja Luke</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'bottomleft'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'Ova karta predstavlja prikaz ukupnog broja stanovnika i starosnu strukturu stanovništva u gradu Banja Luka.';
+            };
+            abstract.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Broj i struktura stanovništva<br /><table><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_Selabezstanovnika0.png" /></td><td>Sela bez stanovnika</td></tr><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_05001.png" /></td><td>0 - 500</td></tr><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_50010002.png" /></td><td>500 - 1000</td></tr><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_100020003.png" /></td><td>1000 - 2000</td></tr><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_200050004.png" /></td><td>2000 - 5000</td></tr><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_5000100005.png" /></td><td>5000 - 10000</td></tr><tr><td style="text-align: center;"><img src="legend/Brojistrukturastanovnitva_0_100001400006.png" /></td><td>10000 - 140000</td></tr></table>': layer_Brojistrukturastanovnitva_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"NM_RS": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_NM_RS = document.createElement('div');
+            div_NM_RS.id = "div_NM_RS";
+            div_NM_RS.className= "filterselect";
+            document.getElementById("menu").appendChild(div_NM_RS);
+            sel_NM_RS = document.createElement('select');
+            sel_NM_RS.multiple = true;
+            sel_NM_RS.size = 10;
+            sel_NM_RS.id = "sel_NM_RS";
+            var NM_RS_options_str = "<option value='' unselected></option>";
+            sel_NM_RS.onchange = function(){filterFunc()};
+            NM_RS_options_str  += '<option value="Agino Selo">Agino Selo</option>';
+            NM_RS_options_str  += '<option value="Banja Luka">Banja Luka</option>';
+            NM_RS_options_str  += '<option value="Barlovci">Barlovci</option>';
+            NM_RS_options_str  += '<option value="Bastasi">Bastasi</option>';
+            NM_RS_options_str  += '<option value="Bistrica">Bistrica</option>';
+            NM_RS_options_str  += '<option value="Bocac">Bocac</option>';
+            NM_RS_options_str  += '<option value="Borkovici">Borkovici</option>';
+            NM_RS_options_str  += '<option value="Bronzani Majdan">Bronzani Majdan</option>';
+            NM_RS_options_str  += '<option value="Cerici">Cerici</option>';
+            NM_RS_options_str  += '<option value="Cokori">Cokori</option>';
+            NM_RS_options_str  += '<option value="Debeljaci">Debeljaci</option>';
+            NM_RS_options_str  += '<option value="Dobrnja">Dobrnja</option>';
+            NM_RS_options_str  += '<option value="Dragocaj">Dragocaj</option>';
+            NM_RS_options_str  += '<option value="Drakulic">Drakulic</option>';
+            NM_RS_options_str  += '<option value="Dujakovci">Dujakovci</option>';
+            NM_RS_options_str  += '<option value="Golesi">Golesi</option>';
+            NM_RS_options_str  += '<option value="Jagare">Jagare</option>';
+            NM_RS_options_str  += '<option value="Kmecani">Kmecani</option>';
+            NM_RS_options_str  += '<option value="Kola">Kola</option>';
+            NM_RS_options_str  += '<option value="Kola Donja">Kola Donja</option>';
+            NM_RS_options_str  += '<option value="Krmine">Krmine</option>';
+            NM_RS_options_str  += '<option value="Krupa na Vrbasu">Krupa na Vrbasu</option>';
+            NM_RS_options_str  += '<option value="Kuljani">Kuljani</option>';
+            NM_RS_options_str  += '<option value="LJubacevo">LJubacevo</option>';
+            NM_RS_options_str  += '<option value="Lokvari">Lokvari</option>';
+            NM_RS_options_str  += '<option value="Lusici">Lusici</option>';
+            NM_RS_options_str  += '<option value="Melina">Melina</option>';
+            NM_RS_options_str  += '<option value="Motike">Motike</option>';
+            NM_RS_options_str  += '<option value="Obrovac">Obrovac</option>';
+            NM_RS_options_str  += '<option value="Pavici">Pavici</option>';
+            NM_RS_options_str  += '<option value="Pavlovac">Pavlovac</option>';
+            NM_RS_options_str  += '<option value="Pervan Donji">Pervan Donji</option>';
+            NM_RS_options_str  += '<option value="Pervan Gornji">Pervan Gornji</option>';
+            NM_RS_options_str  += '<option value="Piskavica">Piskavica</option>';
+            NM_RS_options_str  += '<option value="Ponir">Ponir</option>';
+            NM_RS_options_str  += '<option value="Potkozarje">Potkozarje</option>';
+            NM_RS_options_str  += '<option value="Prijakovci">Prijakovci</option>';
+            NM_RS_options_str  += '<option value="Prijecani">Prijecani</option>';
+            NM_RS_options_str  += '<option value="Prnjavor Mali">Prnjavor Mali</option>';
+            NM_RS_options_str  += '<option value="Radmanici">Radmanici</option>';
+            NM_RS_options_str  += '<option value="Radosavska">Radosavska</option>';
+            NM_RS_options_str  += '<option value="Ramici">Ramici</option>';
+            NM_RS_options_str  += '<option value="Rekavice">Rekavice</option>';
+            NM_RS_options_str  += '<option value="Sargovac">Sargovac</option>';
+            NM_RS_options_str  += '<option value="Simici">Simici</option>';
+            NM_RS_options_str  += '<option value="Slavicka">Slavicka</option>';
+            NM_RS_options_str  += '<option value="Sljivno">Sljivno</option>';
+            NM_RS_options_str  += '<option value="Stratinska">Stratinska</option>';
+            NM_RS_options_str  += '<option value="Stricici">Stricici</option>';
+            NM_RS_options_str  += '<option value="Subotica">Subotica</option>';
+            NM_RS_options_str  += '<option value="Verici">Verici</option>';
+            NM_RS_options_str  += '<option value="Vilusi">Vilusi</option>';
+            NM_RS_options_str  += '<option value="Zaluzani">Zaluzani</option>';
+            NM_RS_options_str  += '<option value="Zelenci">Zelenci</option>';
+            sel_NM_RS.innerHTML = NM_RS_options_str;
+            div_NM_RS.appendChild(sel_NM_RS);
+            var lab_NM_RS = document.createElement('div');
+            lab_NM_RS.innerHTML = 'NM_RS';
+            lab_NM_RS.className = 'filterlabel';
+            div_NM_RS.appendChild(lab_NM_RS);
+            var reset_NM_RS = document.createElement('div');
+            reset_NM_RS.innerHTML = 'clear filter';
+            reset_NM_RS.className = 'filterlabel';
+            reset_NM_RS.onclick = function() {
+                var options = document.getElementById("sel_NM_RS").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_NM_RS.appendChild(reset_NM_RS);
+        </script>
+    </body>
+</html>
